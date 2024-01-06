@@ -33,7 +33,9 @@ public class KafkaProducerExample {
 
 
 
-        sendEvent();
+       //sendEvent();
+
+        sendEvent100PerSec();
 
 
 
@@ -42,10 +44,29 @@ public class KafkaProducerExample {
 
 
 
-        OldWorkload.startWorkload();
+
+        // OldWorkload.startWorkload();
 
       // OldWorkloadSkewed.startWorkload();
         //ConstantWorkload.startWorkload();
+    }
+
+    private static void sendEvent100PerSec() throws InterruptedException {
+
+
+
+        while (true) {
+
+            for (int i = 0; i < 100; i++) {
+                Customer custm = new Customer(rnd.nextInt(), UUID.randomUUID().toString());
+                KafkaProducerExample.
+                        producer.send(new ProducerRecord<String, Customer>(KafkaProducerExample.config.getTopic(),
+                                null, null, UUID.randomUUID().toString(), custm));
+
+            }
+
+            Thread.sleep(1000);
+        }
     }
 
     private static void sendEvent() throws InterruptedException {
